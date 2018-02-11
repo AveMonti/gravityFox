@@ -11,5 +11,5 @@ However, the obstacle may be rockets.
 * SpriteKit
 * Swift 4
 
-<img src="/img/howTo.gif" height="600" width="300" />
-<img src="/img/play.gif" height="600" width="300" />
+<img src="/img/howTo.gif" height="300" width="600" />
+<img src="/img/play.gif" height="300" width="600" />
