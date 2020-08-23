@@ -47,7 +47,7 @@ class GameplayScene: SKScene, SKPhysicsContactDelegate  {
         manageBGsAndGrounds();
         player?.move();
         moveRocket();
-        
+        dead()
 
     
     }
@@ -115,50 +115,67 @@ class GameplayScene: SKScene, SKPhysicsContactDelegate  {
         }
         
     }
+    
+    
+    func dead() {
+        
+        if (self.player!.position.y >= floor1!.position.y + 10 || self.player!.position.y <= ground1!.position.y - 10) {
+             if let scene = EndScene(fileNamed: "End") {
+                 // Set the scale mode to scale to fit the window
+            
+                 
+                 scene.scaleMode = .aspectFill
+                 
+                 // Present the scene
+                 view?.presentScene(scene, transition: SKTransition.doorsOpenVertical(withDuration: TimeInterval(1)))
+                 
+             }
+        }
+    }
 
     
     
     
     private func initializeGame(){
         
+        
         physicsWorld.contactDelegate = self;
         
         
         
-        mainCamera = childNode(withName: "MainCamera") as?
-            SKCameraNode!;
+        mainCamera = childNode(withName: "MainCamera") as? SKCameraNode;
         
         
-        bg1 = childNode(withName: "BG1") as? BGClass!;
-        bg2 = childNode(withName: "BG2") as? BGClass!;
-        bg3 = childNode(withName: "BG3") as? BGClass!;
+        bg1 = childNode(withName: "BG1") as? BGClass;
+        bg2 = childNode(withName: "BG2") as? BGClass;
+        bg3 = childNode(withName: "BG3") as? BGClass;
         
-        ground1 = childNode(withName: "Ground1") as? GroundClass!;
-        ground2 = childNode(withName: "Ground2") as? GroundClass!;
-        ground3 = childNode(withName: "Ground3") as? GroundClass!;
+        ground1 = childNode(withName: "Ground1") as? GroundClass;
+        ground2 = childNode(withName: "Ground2") as? GroundClass;
+        ground3 = childNode(withName: "Ground3") as? GroundClass;
         
         ground1?.initializeGroundAndFloor();
         ground2?.initializeGroundAndFloor();
         ground3?.initializeGroundAndFloor();
         
         
-        floor1 = childNode(withName: "Floor1") as? GroundClass!;
-        floor2 = childNode(withName: "Floor2") as? GroundClass!;
-        floor3 = childNode(withName: "Floor3") as? GroundClass!;
+        floor1 = childNode(withName: "Floor1") as? GroundClass;
+        floor2 = childNode(withName: "Floor2") as? GroundClass;
+        floor3 = childNode(withName: "Floor3") as? GroundClass;
         
         floor1?.initializeGroundAndFloor();
         floor2?.initializeGroundAndFloor();
         floor3?.initializeGroundAndFloor();
         
         
-        player = childNode(withName: "Player") as? Player!;
+        player = childNode(withName: "Player") as? Player;
         player?.initializePlayer();
         
         
         
         
         
-        scoreLabel = mainCamera!.childNode(withName: "ScoreLabel") as? SKLabelNode!;
+        scoreLabel = mainCamera!.childNode(withName: "ScoreLabel") as? SKLabelNode;
         scoreLabel?.text = "0";
         
         
@@ -177,13 +194,13 @@ class GameplayScene: SKScene, SKPhysicsContactDelegate  {
         bg2?.moveBG(camera: mainCamera!);
         bg3?.moveBG(camera: mainCamera!);
         
-        ground1?.moveGroundsOrFloors(camera: mainCamera!);
-        ground2?.moveGroundsOrFloors(camera: mainCamera!);
-        ground3?.moveGroundsOrFloors(camera: mainCamera!);
-        
-        floor1?.moveGroundsOrFloors(camera: mainCamera!);
-        floor2?.moveGroundsOrFloors(camera: mainCamera!);
-        floor3?.moveGroundsOrFloors(camera: mainCamera!);
+//        ground1?.moveGroundsOrFloors(camera: mainCamera!);
+//        ground2?.moveGroundsOrFloors(camera: mainCamera!);
+//        ground3?.moveGroundsOrFloors(camera: mainCamera!);
+//
+//        floor1?.moveGroundsOrFloors(camera: mainCamera!);
+//        floor2?.moveGroundsOrFloors(camera: mainCamera!);
+//        floor3?.moveGroundsOrFloors(camera: mainCamera!);
     }
     
 
@@ -196,7 +213,7 @@ class GameplayScene: SKScene, SKPhysicsContactDelegate  {
     
 
 
-    func spawnItems(){
+    @objc func spawnItems(){
         self.scene?.addChild(itemController.spawnItem(camera: mainCamera!));
     }
     
@@ -204,10 +221,30 @@ class GameplayScene: SKScene, SKPhysicsContactDelegate  {
     func restartGame(){
         if let scene = GameplayScene(fileNamed: "GameplayScene") {
             // Set the scale mode to scale to fit the window
-            scene.scaleMode = .aspectFill
+            if let view = self.view as! SKView? {
+
+                // Load a GameScene with the size of the view
+                let scene = GameplayScene(size: view.frame.size)
+
+                // Set the scale mode to scale to fit the window
+                scene.scaleMode = .aspectFill
+
+                // Present the scene
+                view.presentScene(scene, transition: SKTransition.doorsOpenVertical(withDuration: TimeInterval(2)));
+
+
+                view.ignoresSiblingOrder = true
+                view.showsFPS = true
+                view.showsNodeCount = true
+
+            }
             
+            
+            
+            //scene.scaleMode = .aspectFill
             // Present the scene
-            view!.presentScene(scene, transition: SKTransition.doorsOpenVertical(withDuration: TimeInterval(2)));
+            //view!.presentScene(scene, transition: SKTransition.doorsOpenVertical(withDuration: TimeInterval(2)));
+            
         }
     }
     

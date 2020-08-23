@@ -10,7 +10,7 @@ class EndScene: SKScene {
     
     
     override func sceneDidLoad() {
-        scoreLabel = childNode(withName: "ScoreLabel") as? SKLabelNode!;
+        scoreLabel = childNode(withName: "ScoreLabel") as? SKLabelNode;
         scoreLabel?.text = String(score);
         
         
